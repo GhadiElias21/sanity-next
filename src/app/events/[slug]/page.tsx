@@ -85,9 +85,11 @@ export default async function EventPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const resolvedParams = await params;
   const { data } = await sanityFetch({
     query: EVENT_QUERY,
-    params: await params,
+    params: resolvedParams,
+    tags: [`event-${resolvedParams.slug}`, 'event']
   });
   
   if (!data?.event) {

@@ -216,7 +216,10 @@ function FilterBar({
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function IndexPage() {
-  const { data: events } = await sanityFetch({ query: EVENTS_QUERY });
+  const { data: events } = await sanityFetch({ 
+    query: EVENTS_QUERY,
+    tags: ['events'] // Add tag for revalidation
+  });
   
   // Get unique event types
   const eventTypes = Array.from(new Set(events.map((event: Event) => event.eventType).filter(Boolean)));
