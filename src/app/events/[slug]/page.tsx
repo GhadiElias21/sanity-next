@@ -119,11 +119,11 @@ export default async function EventPage({
   ).toLocaleTimeString();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <main className="min-h-screen bg-gray-900">
       <div className="container mx-auto px-4 py-12">
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors duration-200 mb-8 group"
+          className="inline-flex items-center gap-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 mb-8 group"
         >
           <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
           <span>Back to events</span>
@@ -132,23 +132,23 @@ export default async function EventPage({
         <div className="grid lg:grid-cols-2 gap-16">
           <div className="space-y-6">
             <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl">
-        <Image
-          src={eventImageUrl || "https://placehold.co/550x310/png"}
-          alt={name || "Event"}
+              <Image
+                src={eventImageUrl || "https://placehold.co/550x310/png"}
+                alt={name || "Event"}
                 className="object-cover object-center hover:scale-105 transition-transform duration-700"
                 fill
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {eventType && (
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium bg-white/90 text-gray-900">
-                {eventType.replace("-", " ")}
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium bg-gray-800/90 text-gray-100">
+                  {eventType.replace("-", " ")}
                 </span>
               )}
             </div>
             
             {details && details.length > 0 && (
-              <div className="prose max-w-none bg-white p-8 rounded-2xl shadow-sm">
+              <div className="prose max-w-none dark-card p-8 rounded-2xl shadow-sm prose-invert">
                 <PortableText value={details} />
               </div>
             )}
@@ -159,11 +159,11 @@ export default async function EventPage({
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm">
+            <div className="dark-card p-8 rounded-2xl shadow-sm">
               {name && (
-                <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                {name}
-              </h1>
+                <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                  {name}
+                </h1>
               )}
 
               <div className="space-y-6">
@@ -185,36 +185,36 @@ export default async function EventPage({
                 )}
 
                 <div className="grid gap-4">
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-500 mb-1">Date & Time</p>
-                    <p className="font-semibold">{eventDate}</p>
-                    <p className="text-gray-600">{eventTime}</p>
-                </div>
+                  <div className="p-4 bg-gray-800 rounded-lg">
+                    <p className="text-sm text-gray-400 mb-1">Date & Time</p>
+                    <p className="font-semibold text-gray-100">{eventDate}</p>
+                    <p className="text-gray-300">{eventTime}</p>
+                  </div>
 
                   {doorsOpenTime && (
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-500 mb-1">Doors Open</p>
-                      <p className="font-semibold">{doorsOpenTime}</p>
-          </div>
+                    <div className="p-4 bg-gray-800 rounded-lg">
+                      <p className="text-sm text-gray-400 mb-1">Doors Open</p>
+                      <p className="font-semibold text-gray-100">{doorsOpenTime}</p>
+                    </div>
                   )}
 
                   {venue?.name && (
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-500 mb-1">Venue</p>
-                      <p className="font-semibold">{venue.name}</p>
-            </div>
-          )}
+                    <div className="p-4 bg-gray-800 rounded-lg">
+                      <p className="text-sm text-gray-400 mb-1">Venue</p>
+                      <p className="font-semibold text-gray-100">{venue.name}</p>
+                    </div>
+                  )}
 
                   {venue && (
                     <WeatherForecast date={date} location={partyLocation} />
                   )}
                 </div>
 
-          {tickets && (
+                {tickets && (
                   <div className="space-y-4 pt-4">
-            <a
-              href={tickets}
-                      className="block w-full py-4 px-6 text-center font-semibold text-white rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    <a
+                      href={tickets}
+                      className="block w-full py-4 px-6 text-center font-semibold text-white rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                       Get Tickets
                     </a>
@@ -224,7 +224,7 @@ export default async function EventPage({
                         href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(name)}&dates=${new Date(date).toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${new Date(new Date(date).getTime() + 3600000).toISOString().replace(/[-:]/g, '').split('.')[0]}Z&details=${encodeURIComponent(details?.[0]?.children?.[0]?.text || '')}&location=${encodeURIComponent(partyLocation || '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-blue-500 transition-colors duration-200 flex items-center gap-2"
+                        className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center gap-2"
                       >
                         <span>📅</span> Google Calendar
                       </a>
@@ -236,7 +236,7 @@ export default async function EventPage({
                           start: date,
                           duration: '1:00'
                         }))}`}
-                        className="text-gray-600 hover:text-blue-500 transition-colors duration-200 flex items-center gap-2"
+                        className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center gap-2"
                       >
                         <span>📅</span> iCal
                       </a>

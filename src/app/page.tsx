@@ -84,7 +84,7 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event?.slug?.current}`}
-      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+      className="group dark-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
     >
       <div className="relative aspect-video">
         <Image
@@ -168,7 +168,7 @@ function FilterBar({
           placeholder="Search events..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-800 text-white"
         />
         <svg
           className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
@@ -189,8 +189,8 @@ function FilterBar({
           onClick={() => setSelectedType("")}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedType === ""
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-800 text-gray-300 hover:bg-gray-700"
           }`}
         >
           All Events
@@ -201,8 +201,8 @@ function FilterBar({
             onClick={() => setSelectedType(type)}
             className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
               selectedType === type
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
             }`}
           >
             {type.replace("-", " ")}
@@ -225,9 +225,9 @@ export default async function IndexPage() {
   const eventTypes = Array.from(new Set(events.map((event: Event) => event.eventType).filter(Boolean)));
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <main className="min-h-screen bg-gray-900">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16">
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Discover Amazing Events
@@ -248,8 +248,8 @@ export default async function IndexPage() {
 
         {events.length === 0 && (
           <div className="text-center py-12">
-            <h3 className="text-xl font-medium text-gray-600">No events found</h3>
-            <p className="text-gray-500 mt-2">Try adjusting your search or filters</p>
+            <h3 className="text-xl font-medium text-gray-300">No events found</h3>
+            <p className="text-gray-400 mt-2">Try adjusting your search or filters</p>
           </div>
         )}
       </div>

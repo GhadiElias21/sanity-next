@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #111827; /* dark gray */
+  --foreground: #F3F4F6; /* light gray/white */
+  --card-background: #1F2937; /* slightly lighter dark */
+  --card-hover: #374151; /* even lighter for hover states */
+  --text-primary: #F3F4F6; /* light gray/white */
+  --text-secondary: #D1D5DB; /* slightly darker white/gray */
+  --accent-primary: #3B82F6; /* blue */
+  --accent-secondary: #60A5FA; /* lighter blue */
 }
 
 @theme inline {
@@ -23,4 +29,57 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Dark theme specific styles */
+.dark-card {
+  background-color: var(--card-background);
+  border: 1px solid #374151;
+}
+
+.dark-card:hover {
+  background-color: var(--card-hover);
+}
+
+/* Override some Tailwind classes for dark mode */
+.bg-white {
+  background-color: var(--card-background) !important;
+}
+
+.text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-600, .text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+
+.bg-gray-50, .bg-gray-100 {
+  background-color: var(--card-hover) !important;
+}
+
+/* Gradient overrides */
+.bg-gradient-to-b.from-gray-50.to-white {
+  background: var(--background) !important;
+}
+
+/* Button and interactive element overrides */
+.hover\:bg-gray-200:hover {
+  background-color: var(--card-hover) !important;
+}
+
+/* Form input overrides */
+input, select, textarea {
+  background-color: var(--card-background) !important;
+  border-color: #374151 !important;
+  color: var(--text-primary) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-primary) !important;
+}
+
+/* Preserve blue gradients and accents */
+.bg-gradient-to-r.from-blue-500.to-indigo-600 {
+  background: linear-gradient(to right, var(--accent-primary), #4F46E5) !important;
 }
