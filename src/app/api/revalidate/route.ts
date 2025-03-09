@@ -1,18 +1,16 @@
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Types for Sanity webhook payload
+// Types for actual Sanity webhook payload
 type SanityDocument = {
   _type: string;
   _id: string;
-  slug?: { current: string };
-};
-
-type WebhookPayload = {
-  _type: 'created' | 'updated' | 'deleted';
-  _id: string;
-  operation: string;
-  result: SanityDocument;
+  slug?: { 
+    _type: 'slug';
+    current: string;
+  };
+  name?: string;
+  [key: string]: any; // for other fields
 };
 
 export async function POST(req: NextRequest) {
@@ -24,45 +22,50 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
     }
 
-    // Get and validate the webhook payload
-    const body = (await req.json()) as WebhookPayload;
+    // Get the webhook payload
+    const document = (await req.json()) as SanityDocument;
     
-    if (!body?._type || !body?.result) {
-      console.error('Invalid webhook payload', body);
+    if (!document?._type) {
+      console.error('Invalid webhook payload', document);
       return NextResponse.json({ message: 'Invalid payload' }, { status: 400 });
     }
 
     // Revalidate based on the document type
-    switch (body.result._type) {
+    switch (document._type) {
       case 'event':
         // Revalidate all event-related tags
+        console.log('Revalidating event tags');
         revalidateTag('events');
         revalidateTag('event');
         
         // If we have a slug, revalidate that specific event
-        if (body.result.slug?.current) {
-          revalidateTag(`event-${body.result.slug.current}`);
+        if (document.slug?.current) {
+          console.log('Revalidating specific event:', document.slug.current);
+          revalidateTag(`event-${document.slug.current}`);
         }
         break;
       
       // Add other document types as needed
       default:
         // Revalidate everything if we're not sure
+        console.log('Revalidating all tags');
         revalidateTag('events');
         revalidateTag('event');
     }
 
-    console.log(`Revalidated ${body.result._type} content`, {
-      documentId: body.result._id,
-      type: body.result._type,
-      operation: body.operation
+    console.log('Revalidation successful:', {
+      documentId: document._id,
+      type: document._type,
+      name: document.name,
+      slug: document.slug?.current
     });
 
     return NextResponse.json({
       revalidated: true,
       now: Date.now(),
-      document: body.result._id,
-      type: body.result._type
+      document: document._id,
+      type: document._type,
+      name: document.name
     });
 
   } catch (err) {
