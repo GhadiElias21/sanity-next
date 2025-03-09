@@ -45,7 +45,7 @@ function RelatedEvents({ events }: { events: any[] }) {
 
   return (
     <div className="mt-12">
-      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
         More Events You Might Like
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -53,7 +53,7 @@ function RelatedEvents({ events }: { events: any[] }) {
           <Link 
             href={`/events/${event.slug.current}`}
             key={event._id}
-            className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+            className="group dark-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
           >
             <div className="relative aspect-video">
               <Image
@@ -62,12 +62,18 @@ function RelatedEvents({ events }: { events: any[] }) {
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                 fill
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              {event.eventType && (
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium bg-gray-800/90 text-gray-100">
+                  {event.eventType.replace("-", " ")}
+                </span>
+              )}
             </div>
             <div className="p-4">
-              <div className="text-sm text-gray-500 mb-2">
+              <div className="text-sm text-gray-300 mb-2">
                 {new Date(event.date).toLocaleDateString()}
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-blue-500 transition-colors">
+              <h3 className="font-semibold text-gray-100 group-hover:text-blue-400 transition-colors">
                 {event.name}
               </h3>
             </div>
@@ -148,7 +154,7 @@ export default async function EventPage({
             </div>
             
             {details && details.length > 0 && (
-              <div className="prose max-w-none dark-card p-8 rounded-2xl shadow-sm prose-invert">
+              <div className="prose prose-invert max-w-none dark-card p-8 rounded-2xl shadow-sm">
                 <PortableText value={details} />
               </div>
             )}
@@ -173,15 +179,15 @@ export default async function EventPage({
                 </div>
 
                 {headline?.name && (
-                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-lg">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xl">
                       {headline.name[0]}
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Headline Artist</p>
-                      <p className="font-semibold">{headline.name}</p>
+                      <p className="text-sm text-gray-400">Headline Artist</p>
+                      <p className="font-semibold text-gray-100">{headline.name}</p>
                     </div>
-                </div>
+                  </div>
                 )}
 
                 <div className="grid gap-4">
