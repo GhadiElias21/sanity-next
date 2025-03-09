@@ -1,40 +1,10 @@
+'use client';
+
 import Link from "next/link";
-import { defineQuery } from "next-sanity";
-import { sanityFetch } from "@/sanity/live";
 import Image from "next/image";
-import imageUrlBuilder from "@sanity/image-url";
+import { Event } from "@/types/event";
 import { client } from "@/sanity/client";
-
-interface Event {
-  _id: string;
-  name: string;
-  slug: { current: string };
-  date: string;
-  ticketsPrice: number;
-  image?: any;
-  eventType?: string;
-  venue?: {
-    name: string;
-  };
-  headline?: {
-    name: string;
-  };
-}
-
-const EVENTS_QUERY = defineQuery(`*[
-  _type == "event"
-  && defined(slug.current)
-]{
-  _id, 
-  name, 
-  slug, 
-  date,
-  ticketsPrice,
-  image,
-  eventType,
-  venue->,
-  headline->
-}|order(date asc)`);
+import imageUrlBuilder from "@sanity/image-url";
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: any) =>
@@ -76,7 +46,7 @@ function EventStatus({ date }: { date: string }) {
   );
 }
 
-function EventCard({ event }: { event: Event }) {
+export default function EventCard({ event }: { event: Event }) {
   const eventImageUrl = event.image
     ? urlFor(event.image)?.width(400).height(225).url() || "https://placehold.co/400x225/png"
     : "https://placehold.co/400x225/png";
@@ -89,7 +59,7 @@ function EventCard({ event }: { event: Event }) {
       <div className="relative aspect-video">
         <Image
           src={eventImageUrl}
-          alt={event?.name}
+          alt={event?.name || "Event"}
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           fill
         />
@@ -99,7 +69,9 @@ function EventCard({ event }: { event: Event }) {
             {event.eventType.replace("-", " ")}
           </span>
         )}
-        <EventStatus date={event.date} />
+        <div className="absolute top-4 right-4">
+          <EventStatus date={event.date} />
+        </div>
       </div>
       <div className="p-6 flex-1 flex flex-col">
         <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-500 transition-colors mb-2">
@@ -145,109 +117,4 @@ function EventCard({ event }: { event: Event }) {
       </div>
     </Link>
   );
-}
-
-function FilterBar({ 
-  searchTerm,
-  setSearchTerm,
-  selectedType,
-  setSelectedType,
-  eventTypes 
-}: { 
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  selectedType: string;
-  setSelectedType: (type: string) => void;
-  eventTypes: string[];
-}) {
-  return (
-    <div className="flex flex-col md:flex-row gap-4 mb-8">
-      <div className="relative flex-1">
-        <input
-          type="text"
-          placeholder="Search events..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-        <svg
-          className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </div>
-      <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-        <button
-          onClick={() => setSelectedType("")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            selectedType === ""
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          All Events
-        </button>
-        {eventTypes.map((type) => (
-          <button
-            key={type}
-            onClick={() => setSelectedType(type)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-              selectedType === type
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            {type.replace("-", " ")}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default async function IndexPage() {
-  const { data: events } = await sanityFetch({ query: EVENTS_QUERY });
-  
-  // Get unique event types
-  const eventTypes = Array.from(new Set(events.map((event: Event) => event.eventType).filter(Boolean)));
-
-  return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Discover Amazing Events
-          </h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
-            Find and book tickets for the best concerts, parties, and performances in your area.
-          </p>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-12">
-        {/* Client-side FilterBar will be added here */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event: Event) => (
-            <EventCard key={event._id} event={event} />
-          ))}
-        </div>
-
-        {events.length === 0 && (
-          <div className="text-center py-12">
-            <h3 className="text-xl font-medium text-gray-600">No events found</h3>
-            <p className="text-gray-500 mt-2">Try adjusting your search or filters</p>
-          </div>
-        )}
-      </div>
-    </main>
-  );
-}
+} 
