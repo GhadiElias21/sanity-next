@@ -213,6 +213,8 @@ function FilterBar({
   );
 }
 
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function IndexPage() {
   const { data: events } = await sanityFetch({ query: EVENTS_QUERY });
   

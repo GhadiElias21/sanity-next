@@ -14,10 +14,10 @@ import PriceIndicator from "@/app/components/PriceIndicator";
 
 const EVENT_QUERY = defineQuery(`{
   "event": *[_type == "event" && slug.current == $slug][0]{
-    ...,
-    "date": coalesce(date, now()),
-    "doorsOpen": coalesce(doorsOpen, 0),
-    headline->,
+  ...,
+  "date": coalesce(date, now()),
+  "doorsOpen": coalesce(doorsOpen, 0),
+  headline->,
     venue->,
     ticketsPrice,
     partyLocation
@@ -78,6 +78,8 @@ function RelatedEvents({ events }: { events: any[] }) {
   );
 }
 
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function EventPage({
   params,
 }: {
@@ -128,9 +130,9 @@ export default async function EventPage({
         <div className="grid lg:grid-cols-2 gap-16">
           <div className="space-y-6">
             <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src={eventImageUrl || "https://placehold.co/550x310/png"}
-                alt={name || "Event"}
+        <Image
+          src={eventImageUrl || "https://placehold.co/550x310/png"}
+          alt={name || "Event"}
                 className="object-cover object-center hover:scale-105 transition-transform duration-700"
                 fill
                 priority
@@ -138,7 +140,7 @@ export default async function EventPage({
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {eventType && (
                 <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium bg-white/90 text-gray-900">
-                  {eventType.replace("-", " ")}
+                {eventType.replace("-", " ")}
                 </span>
               )}
             </div>
@@ -158,8 +160,8 @@ export default async function EventPage({
             <div className="bg-white p-8 rounded-2xl shadow-sm">
               {name && (
                 <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                  {name}
-                </h1>
+                {name}
+              </h1>
               )}
 
               <div className="space-y-6">
@@ -177,7 +179,7 @@ export default async function EventPage({
                       <p className="text-sm text-gray-500">Headline Artist</p>
                       <p className="font-semibold">{headline.name}</p>
                     </div>
-                  </div>
+                </div>
                 )}
 
                 <div className="grid gap-4">
@@ -185,31 +187,31 @@ export default async function EventPage({
                     <p className="text-sm text-gray-500 mb-1">Date & Time</p>
                     <p className="font-semibold">{eventDate}</p>
                     <p className="text-gray-600">{eventTime}</p>
-                  </div>
+                </div>
 
                   {doorsOpenTime && (
                     <div className="p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm text-gray-500 mb-1">Doors Open</p>
                       <p className="font-semibold">{doorsOpenTime}</p>
-                    </div>
+          </div>
                   )}
 
                   {venue?.name && (
                     <div className="p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm text-gray-500 mb-1">Venue</p>
                       <p className="font-semibold">{venue.name}</p>
-                    </div>
-                  )}
+            </div>
+          )}
 
                   {venue && (
                     <WeatherForecast date={date} location={partyLocation} />
                   )}
                 </div>
 
-                {tickets && (
+          {tickets && (
                   <div className="space-y-4 pt-4">
-                    <a
-                      href={tickets}
+            <a
+              href={tickets}
                       className="block w-full py-4 px-6 text-center font-semibold text-white rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                       Get Tickets
