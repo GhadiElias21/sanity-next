@@ -95,7 +95,7 @@ function EventCard({ event }: { event: Event }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         {event.eventType && (
-          <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium bg-black/90 text-blue-500">
+          <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium bg-black/90 text-blue-300">
             {event.eventType.replace("-", " ")}
           </span>
         )}
