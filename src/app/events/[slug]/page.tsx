@@ -11,6 +11,7 @@ import VenueMap from "@/app/components/VenueMap";
 import ShareButtons from "@/app/components/ShareButtons";
 import WeatherForecast from "@/app/components/WeatherForecast";
 import PriceIndicator from "@/app/components/PriceIndicator";
+import Countdown from "@/app/components/Countdown";
 
 const EVENT_QUERY = defineQuery(`{
   "event": *[_type == "event" && slug.current == $slug][0]{
@@ -177,6 +178,8 @@ export default async function EventPage({
                   <EventStatus date={date} />
                   {ticketsPrice && <PriceIndicator price={ticketsPrice} />}
                 </div>
+
+                <Countdown targetDate={date} />
 
                 {headline?.name && (
                   <div className="flex items-center gap-4 p-4 bg-gray-800 rounded-lg">
